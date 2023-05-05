@@ -141,36 +141,112 @@ The SPF records always starts with `v=spf1`. The mechanisms follow afterwards wh
 
 There are different qualifiers for the mechanisms:
 
-<table border="1" id="bkmrk-qualifier-meaning-ex" style="border-collapse: collapse; width: 100.864%; height: 147.984px;"><thead><tr style="height: 29.7969px;"><td style="width: 9.51792%; height: 29.7969px;">Qualifier</td><td style="width: 9.76514%; height: 29.7969px;">Meaning</td><td style="width: 80.7169%; height: 29.7969px;">Explanation</td></tr></thead><tbody><tr style="height: 29.7969px;"><td class="align-center" style="width: 9.51792%; height: 29.7969px;">+</td><td style="width: 9.76514%; height: 29.7969px;">pass</td><td style="width: 80.7169%; height: 29.7969px;">Mechanism is allowed to send mail. This is default an can be omitted.</td></tr><tr style="height: 29.7969px;"><td class="align-center" style="width: 9.51792%; height: 29.7969px;">-</td><td style="width: 9.76514%; height: 29.7969px;">fail</td><td style="width: 80.7169%; height: 29.7969px;">Mechanism is not allowed to send mail. Most spam filters reject the mail.</td></tr><tr style="height: 29.7969px;"><td class="align-center" style="width: 9.51792%; height: 29.7969px;">~</td><td style="width: 9.76514%; height: 29.7969px;">softfail</td><td style="width: 80.7169%; height: 29.7969px;">Mechanism is probably not allowed to send mail. Most spam filters put the email in spam folder.</td></tr><tr style="height: 28.7969px;"><td class="align-center" style="width: 9.51792%; height: 28.7969px;">?</td><td style="width: 9.76514%; height: 28.7969px;">neutral</td><td style="width: 80.7169%; height: 28.7969px;">Mechanism is not explicitly allowed to send mail. </td></tr></tbody></table>
+<table border="1" id="bkmrk-qualifier-meaning-ex" style="border-collapse: collapse; width: 100.864%; height: 147.984px;"><thead><tr style="height: 29.7969px;"><td style="width: 9.51792%; height: 29.7969px;">
+
+**Qualifier**
+
+</td><td style="width: 9.76514%; height: 29.7969px;">
+
+**Meaning**
+
+</td><td style="width: 80.7169%; height: 29.7969px;">
+
+**Explanation**
+
+</td></tr></thead><tbody><tr style="height: 29.7969px;"><td class="align-center" style="width: 9.51792%; height: 29.7969px;">+</td><td style="width: 9.76514%; height: 29.7969px;">pass</td><td style="width: 80.7169%; height: 29.7969px;">
+
+Mechanism is allowed to send mail. This is default an can be omitted.
+
+</td></tr><tr style="height: 29.7969px;"><td class="align-center" style="width: 9.51792%; height: 29.7969px;">-</td><td style="width: 9.76514%; height: 29.7969px;">fail</td><td style="width: 80.7169%; height: 29.7969px;">
+
+Mechanism is not allowed to send mail. Most spam filters reject the mail.
+
+</td></tr><tr style="height: 29.7969px;"><td class="align-center" style="width: 9.51792%; height: 29.7969px;">~</td><td style="width: 9.76514%; height: 29.7969px;">softfail</td><td style="width: 80.7169%; height: 29.7969px;">
+
+Mechanism is probably not allowed to send mail. Most spam filters put the email in spam folder.
+
+</td></tr><tr style="height: 28.7969px;"><td class="align-center" style="width: 9.51792%; height: 28.7969px;">?</td><td style="width: 9.76514%; height: 28.7969px;">neutral</td><td style="width: 80.7169%; height: 28.7969px;">
+
+Mechanism is not explicitly allowed to send mail.
+
+</td></tr></tbody></table>
 
 The following mechanisms and modifiers are possible:
 
-<table border="1" id="bkmrk-mechanism-%2Fmodifier-" style="border-collapse: collapse; width: 100%; height: 928.016px;"><thead><tr style="height: 46.5938px;"><td style="width: 12.4841%; height: 46.5938px;">Mechanism /  
-Modifier</td><td style="width: 87.5159%; height: 46.5938px;">Explanation</td></tr></thead><tbody><tr style="height: 63.3906px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 63.3906px;">all</td><td style="width: 87.5159%; height: 63.3906px;">This matches always regardless of other entries in the SPF record. This should only be used as the rightmost mechanism. Mechanisms after this will never be tested. If this mechanism is present, any "redirect" modifier is ignored regardless of the ordering of the mechanisms.</td></tr><tr style="height: 96.9844px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 96.9844px;">include</td><td style="width: 87.5159%; height: 96.9844px;">This includes the SPF record of another domain and is always specified with a domain afterwards.   
+<table border="1" id="bkmrk-mechanism-%2Fmodifier-" style="border-collapse: collapse; width: 100%; height: 928.016px;"><thead><tr style="height: 46.5938px;"><td style="width: 12.4841%; height: 46.5938px;">
+
+**Mechanism /  
+Modifier**
+
+</td><td style="width: 87.5159%; height: 46.5938px;">
+
+**Explanation**
+
+</td></tr></thead><tbody><tr style="height: 63.3906px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 63.3906px;">all</td><td style="width: 87.5159%; height: 63.3906px;">
+
+This matches always regardless of other entries in the SPF record. This should only be used as the rightmost mechanism. Mechanisms after this will never be tested. If this mechanism is present, any "redirect" modifier is ignored regardless of the ordering of the mechanisms.
+
+</td></tr><tr style="height: 96.9844px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 96.9844px;">include</td><td style="width: 87.5159%; height: 96.9844px;">
+
+This includes the SPF record of another domain and is always specified with a domain afterwards.   
 Example: `v=spf1 include:domain.com`  
-That means that the SPF record of domain.com is now included into your SPF record. The record is not included literally in your SPF record but only the evaluated result is included. That means that for example a mechanism `-all` in the referenced SPF record is not included in your SPF record.</td></tr><tr style="height: 141.766px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 141.766px;">a</td><td style="width: 87.5159%; height: 141.766px;">This matches the IP address of a specified domain into your SPF record.  
+That means that the SPF record of domain.com is now included into your SPF record. The record is not included literally in your SPF record but only the evaluated result is included. That means that for example a mechanism `-all` in the referenced SPF record is not included in your SPF record.
+
+</td></tr><tr style="height: 141.766px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 141.766px;">a</td><td style="width: 87.5159%; height: 141.766px;">
+
+This matches the IP address of a specified domain into your SPF record.  
 Example: `v=spf1 a:domain.com`  
 That means that the [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) or [AAAA record](https://github.com/mic05/SelfHosting/wiki/DNS-records#aaaa-resource-record) of the specified domain `domain.com` is taken for the mechanism.  
 This record can also be specified without a domain.  
 Example: `v=spf1 a`  
-That means that the [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) of the domain which has this SPF record is taken for the mechanism.</td></tr><tr style="height: 124.969px;"><td class="align-center" style="width: 12.4841%; height: 124.969px; vertical-align: middle;">mx</td><td style="width: 87.5159%; height: 124.969px;">This matches the IP address of the [MX record](https://github.com/mic05/SelfHosting/wiki/DNS-records#mx-resource-record) of a specified domain into your SPF record.  
+That means that the [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) of the domain which has this SPF record is taken for the mechanism.
+
+</td></tr><tr style="height: 124.969px;"><td class="align-center" style="width: 12.4841%; height: 124.969px; vertical-align: middle;">mx</td><td style="width: 87.5159%; height: 124.969px;">
+
+This matches the IP address of the [MX record](https://github.com/mic05/SelfHosting/wiki/DNS-records#mx-resource-record) of a specified domain into your SPF record.  
 Example: `v=spf1 mx:domain.com`  
 That means that the [MX record](https://github.com/mic05/SelfHosting/wiki/DNS-records#mx-resource-record) of the specified domain `domain.com` is taken for the mechanism.  
 This record can also be specified without a domain.  
 Example: `v=spf1 mx`  
-That means that the MX record of the domain which has this SPF record is taken for the mechanism.</td></tr><tr style="height: 35.3906px;"><td class="align-center" style="width: 12.4841%; height: 35.3906px; vertical-align: middle;">ptr</td><td style="width: 87.5159%; height: 35.3906px;">Do not use this mechanism. Read more of this in [RFC 7208 5.5](https://datatracker.ietf.org/doc/html/rfc7208#section-5.5).</td></tr><tr style="height: 63.3906px;"><td class="align-center" style="width: 12.4841%; height: 63.3906px; vertical-align: middle;">ip4</td><td style="width: 87.5159%; height: 63.3906px;">This matches the specified IPv4 address or network into your SPF record.  
+That means that the MX record of the domain which has this SPF record is taken for the mechanism.
+
+</td></tr><tr style="height: 35.3906px;"><td class="align-center" style="width: 12.4841%; height: 35.3906px; vertical-align: middle;">ptr</td><td style="width: 87.5159%; height: 35.3906px;">
+
+Do not use this mechanism. Read more of this in [RFC 7208 5.5](https://datatracker.ietf.org/doc/html/rfc7208#section-5.5).
+
+</td></tr><tr style="height: 63.3906px;"><td class="align-center" style="width: 12.4841%; height: 63.3906px; vertical-align: middle;">ip4</td><td style="width: 87.5159%; height: 63.3906px;">
+
+This matches the specified IPv4 address or network into your SPF record.  
 Example: `v=spf1 ip4:20.56.98.10/32`  
-That means that the IP address 20.56.98.10 is taken for the mechanism.</td></tr><tr style="height: 63.3906px;"><td class="align-center" style="width: 12.4841%; height: 63.3906px; vertical-align: middle;">ip6</td><td style="width: 87.5159%; height: 63.3906px;">This matches the specified IPv6 address or network into your SPF record.  
+That means that the IP address 20.56.98.10 is taken for the mechanism.
+
+</td></tr><tr style="height: 63.3906px;"><td class="align-center" style="width: 12.4841%; height: 63.3906px; vertical-align: middle;">ip6</td><td style="width: 87.5159%; height: 63.3906px;">
+
+This matches the specified IPv6 address or network into your SPF record.  
 Example: `v=spf1 ip6:2001:db8:3c4d:15::/64`  
-That means that the IP network 2001:db8:3c4d:15::/64 is taken for the mechanism.</td></tr><tr style="height: 35.3906px;"><td class="align-center" style="width: 12.4841%; height: 35.3906px; vertical-align: middle;">exists</td><td style="width: 87.5159%; height: 35.3906px;">This mechanism is only used for very complex scenarios. If interested, read [RFC 7208 5.7](https://datatracker.ietf.org/doc/html/rfc7208#section-5.7).</td></tr><tr style="height: 113.781px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 113.781px;">redirect</td><td style="width: 87.5159%; height: 113.781px;">This modifier redirects the SPF record to the SPF record of a specified domain.  
+That means that the IP network 2001:db8:3c4d:15::/64 is taken for the mechanism.
+
+</td></tr><tr style="height: 35.3906px;"><td class="align-center" style="width: 12.4841%; height: 35.3906px; vertical-align: middle;">exists</td><td style="width: 87.5159%; height: 35.3906px;">
+
+This mechanism is only used for very complex scenarios. If interested, read [RFC 7208 5.7](https://datatracker.ietf.org/doc/html/rfc7208#section-5.7).
+
+</td></tr><tr style="height: 113.781px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 113.781px;">redirect</td><td style="width: 87.5159%; height: 113.781px;">
+
+This modifier redirects the SPF record to the SPF record of a specified domain.  
 Example: `v=spf1 redirect=_spf.domain.com`  
 That means that the SPF record of the domain \_spf.domain.com is taken for the mechanism.  
 Please note: This modifier has an "=" for separating the operator and the value.  
 This modifier should be used as the rightmost modifier and mechanism.  
-This modifier is ignored if an "all" mechanism is present in the record.</td></tr><tr style="height: 142.969px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 142.969px;">exp</td><td style="width: 87.5159%; height: 142.969px;">This modifier is used for an explanation if a receiver rejects a message.  
+This modifier is ignored if an "all" mechanism is present in the record.
+
+</td></tr><tr style="height: 142.969px;"><td class="align-center" style="width: 12.4841%; vertical-align: middle; height: 142.969px;">exp</td><td style="width: 87.5159%; height: 142.969px;">
+
+This modifier is used for an explanation if a receiver rejects a message.  
 Example: `v=spf1 mx -all exp=spffail.domain.com`  
 That means that only the mx servers of the domain are allowed to send mails for the domain. If other servers send mails for the domain and a receiver rejects those messages because of the SPF record, the receiving mail server will lookup the [TXT record](https://github.com/mic05/SelfHosting/wiki/DNS-records#txt-resource-record) of the specified domain `spffail.domain.com` and will include this explanation string into the bounce message or mail log.  
-An example for a explanation string could be: `Emails from domain.com should only be sent by allowed servers.`</td></tr></tbody></table>
+An example for a explanation string could be: `Emails from domain.com should only be sent by allowed servers.`
+
+</td></tr></tbody></table>
 
 ### Example
 
