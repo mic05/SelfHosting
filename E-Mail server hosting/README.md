@@ -16,7 +16,6 @@
   - [8. Set MX records](#8-set-mx-records)
     - [What are MX records?](#what-are-mx-records)
     - [What do I have to set?](#what-do-i-have-to-set)
-  - [9. Checklist](#9-checklist)
 
 ## 1. Introduction
 
@@ -254,25 +253,3 @@ If a mail server is delivering a mail to info@domain.com, the mail server looks 
 ### What do I have to set?
 
 So simply set your MX record to the hostname of your mail server, e.g. `mail1.domain.com`.
-
-## 9. Checklist
-
-You can find a checklist of all the things you have to have set up for hosting a mail server.
-
-- [Email server hosting](#email-server-hosting)
-  - [1. Introduction](#1-introduction)
-  - [2. Requirements](#2-requirements)
-  - [3. Get a domain](#3-get-a-domain)
-  - [4. Set up mail server](#4-set-up-mail-server)
-  - [5. Set up spam filter](#5-set-up-spam-filter)
-  - [6. Set PTR record for your domain](#6-set-ptr-record-for-your-domain)
-  - [7. Set SPF record](#7-set-spf-record)
-    - [How is the SPF record built?](#how-is-the-spf-record-built)
-    - [What mechanisms and modifiers can be used in a SPF record?](#what-mechanisms-and-modifiers-can-be-used-in-a-spf-record)
-    - [Example](#example)
-    - [What do I have to set as an SPF record?](#what-do-i-have-to-set-as-an-spf-record)
-    - [SPF HELO/EHLO](#spf-heloehlo)
-  - [8. Set MX records](#8-set-mx-records)
-    - [What are MX records?](#what-are-mx-records)
-    - [What do I have to set?](#what-do-i-have-to-set)
-  - [9. Checklist](#9-checklist)
