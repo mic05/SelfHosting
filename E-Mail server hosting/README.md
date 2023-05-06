@@ -7,13 +7,14 @@
   - [4. Set up mail server](#4-set-up-mail-server)
   - [5. Set up spam filter](#5-set-up-spam-filter)
   - [6. Set PTR record for your domain](#6-set-ptr-record-for-your-domain)
-  - [7. Set SPF record](#7-set-spf-record)
+  - [7. Set A / AAAA records](#7-set-a--aaaa-records)
+  - [8. Set SPF record](#8-set-spf-record)
     - [How is the SPF record built?](#how-is-the-spf-record-built)
     - [What mechanisms and modifiers can be used in a SPF record?](#what-mechanisms-and-modifiers-can-be-used-in-a-spf-record)
     - [Example](#example)
     - [What do I have to set as an SPF record?](#what-do-i-have-to-set-as-an-spf-record)
     - [SPF HELO/EHLO](#spf-heloehlo)
-  - [8. Set MX records](#8-set-mx-records)
+  - [9. Set MX records](#9-set-mx-records)
     - [What are MX records?](#what-are-mx-records)
     - [What do I have to set?](#what-do-i-have-to-set)
 
@@ -116,7 +117,12 @@ You have to check the documentation of your cloud hosting provider or contact yo
 
 Set your [PTR record](https://github.com/mic05/SelfHosting/wiki/DNS-records#ptr-resource-record) to the domain of either your mail server or your spam filter (Set it to the domain of the server which is sending your mails).
 
-## 7. Set SPF record
+## 7. Set A / AAAA records
+
+An [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) or [AAAA record](https://github.com/mic05/SelfHosting/wiki/DNS-records#aaaa-resource-record) is a must have, not an optional thing.
+If your mail server domain is `mail1.domain.com` for example, you have to set an [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) and/or an [AAAA record](https://github.com/mic05/SelfHosting/wiki/DNS-records#aaaa-resource-record) to the ipv4 and/or ipv6 address of your mail server.
+
+## 8. Set SPF record
 
 SPF stands for Sender Policy Framework and is defined in [RFC 7208](https://datatracker.ietf.org/doc/html/rfc7208). The SPF record defines which mail servers are allowed to send mails for your domain.
 
@@ -306,7 +312,7 @@ mail1.domain.com  IN TXT    v=spf1 a -all
 
 As you can see the FQDN `mail1.domain.com` now has an SPF record that says that the [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) of `mail1.domain.com` is allowed to send. Therefore when the mail server `mail1.domain.com` is sending an email and is telling `HELO mail1.domain.com`, the receiving mail server can safely tell that this is a mailserver allowed to send mail when the IP address of the sending server matches the A record of `mail1.domain.com`.
 
-## 8. Set MX records
+## 9. Set MX records
 
 ### What are MX records?
 
