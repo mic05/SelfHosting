@@ -8,10 +8,11 @@
   - [5. Set up spam filter](#5-set-up-spam-filter)
   - [6. Set PTR record for your domain](#6-set-ptr-record-for-your-domain)
   - [7. Set A / AAAA records](#7-set-a--aaaa-records)
+    - [Example](#example)
   - [8. Set SPF record](#8-set-spf-record)
     - [How is the SPF record built?](#how-is-the-spf-record-built)
     - [What mechanisms and modifiers can be used in a SPF record?](#what-mechanisms-and-modifiers-can-be-used-in-a-spf-record)
-    - [Example](#example)
+    - [Example](#example-1)
     - [What do I have to set as an SPF record?](#what-do-i-have-to-set-as-an-spf-record)
     - [SPF HELO/EHLO](#spf-heloehlo)
   - [9. Set MX records](#9-set-mx-records)
@@ -120,7 +121,17 @@ Set your [PTR record](https://github.com/mic05/SelfHosting/wiki/DNS-records#ptr-
 ## 7. Set A / AAAA records
 
 An [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) or [AAAA record](https://github.com/mic05/SelfHosting/wiki/DNS-records#aaaa-resource-record) is a must have, not an optional thing.
-If your mail server domain is `mail1.domain.com` for example, you have to set an [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) and/or an [AAAA record](https://github.com/mic05/SelfHosting/wiki/DNS-records#aaaa-resource-record) to the ipv4 and/or ipv6 address of your mail server.
+If your mail server domain is `mail1.domain.com` for example, you have to set an [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) and/or an [AAAA record](https://github.com/mic05/SelfHosting/wiki/DNS-records#aaaa-resource-record) to the ipv4 and/or ipv6 address of your mail server. If you have a spam filter or smarthost which is sending the mails, you have to set the record(s) for this one.
+
+:warning: **Please note**: The [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) or [AAAA record](https://github.com/mic05/SelfHosting/wiki/DNS-records#aaaa-resource-record) of the server sending the mail out must match the PTR record. If this is not the case, some mail servers might reject your mails.
+
+### Example
+If the IP of your mail server or spam filter is `90.270.83.56` and your domain is `mail1.domain.com`, you have to set the following in your DNS:
+```
+mail1.domain.com.           IN A      90.270.83.56
+56.83.270.90.in-addr.arpa   IN PTR    mail1.domain.com
+```
+
 
 ## 8. Set SPF record
 
