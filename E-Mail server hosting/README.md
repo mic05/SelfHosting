@@ -374,7 +374,7 @@ When your mail server or smarthost sends a mail, it is signing it with a dkim ke
 A DKIM entry in your DNS has to be on a specific selector. You can choose this selector as you like.
 
 | Part          | Meaning           |
-| ------------- |:-------------:|
+| ------------- |-------------|
 | v     | Version of the DKIM Key |
 | h      | Accepted hash algorithms, default is to accept all.      |
 | k | The type of the key. Default is rsa.      |
