@@ -18,6 +18,16 @@
   - [9. Set MX records](#9-set-mx-records)
     - [What are MX records?](#what-are-mx-records)
     - [What do I have to set?](#what-do-i-have-to-set)
+  - [10. DKIM (DomainKeys Identified Mail)](#10-dkim-domainkeys-identified-mail)
+    - [What is DKIM?](#what-is-dkim)
+    - [Is DKIM a must have?](#is-dkim-a-must-have)
+    - [How does DKIM work?](#how-does-dkim-work)
+    - [Parts of DKIM](#parts-of-dkim)
+    - [How to set up DKIM](#how-to-set-up-dkim)
+  - [11. Specifics of some email providers](#11-specifics-of-some-email-providers)
+    - [German Telekom](#german-telekom)
+    - [Microsoft Exchange Online (Microsoft 365)](#microsoft-exchange-online-microsoft-365)
+  - [12. Do I have everything set up correctly?](#12-do-i-have-everything-set-up-correctly)
 
 ## 1. Introduction
 
@@ -85,6 +95,7 @@ A domain can be purchased from many providers. For example, you can look at the 
 This is supposed to be a general guide to mail server hosting, so we will not go into more detail about setting up a mail server here.
 
 There are plenty of guides out there, check out some of the mail servers in the [awesome-selfhosted](https://github.com/awesome-selfhosted/awesome-selfhosted#communication---email---complete-solutions) list on github.
+You are well advised to choose a solution which supports [DKIM](#10-dkim-domainkeys-identified-mail) but this is not a must have.
 
 <span style="text-decoration: underline;">**Please consider the following for the IP address from which your server sends mails:**</span>
 
@@ -108,7 +119,7 @@ This is supposed to be a general guide to mail server hosting, so we will not go
 
 There are plenty of spam filter solutions out there. You can check out [Proxmox Mail Gateway](https://www.proxmox.com/de/proxmox-mail-gateway) for example.
 
-If your spam filter is functioning as a smart host and your mail server is not sending and receiving your mails directly, please note the [recommendations under the mail server section](#4-set-up-mail-server).
+If your spam filter is functioning as a smarthost and your mail server is not sending and receiving your mails directly, please note the [recommendations under the mail server section](#4-set-up-mail-server).
 
 ## 6. Set PTR record for your domain
 
@@ -311,7 +322,7 @@ You can see that the sending mail server is telling his name after HELO. This is
 
 Verifying HELO/EHLO names is recommended by the SPF RFC. So publishing records for these hostnames is an important part of the SPF protocol. To publish a HELO rule, a SPF record is usually created that is associated with the HELO FQDN used by your mail server (e.g. "mail1.domain.com").
 
-So to say it shortly: You can set an [TXT record](https://github.com/mic05/SelfHosting/wiki/DNS-records#txt-resource-record) on each hostname of your servers which are sending mails. For example this should look something like this:
+So to say it shortly: You can set a [TXT record](https://github.com/mic05/SelfHosting/wiki/DNS-records#txt-resource-record) on each hostname of your servers which are sending mails. For example this should look something like this:
 
 ```
 domain.com.       IN A      90.270.83.57
@@ -321,7 +332,7 @@ mail1.domain.com. IN A      90.270.83.56
 mail1.domain.com  IN TXT    v=spf1 a -all
 ```
 
-As you can see the FQDN `mail1.domain.com` now has an SPF record that says that the [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) of `mail1.domain.com` is allowed to send. Therefore when the mail server `mail1.domain.com` is sending an email and is telling `HELO mail1.domain.com`, the receiving mail server can safely tell that this is a mailserver allowed to send mail when the IP address of the sending server matches the A record of `mail1.domain.com`.
+As you can see the FQDN `mail1.domain.com` now has an SPF record that says that the [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) of `mail1.domain.com` is allowed to send. Therefore when the mail server `mail1.domain.com` is sending an email and is telling `HELO mail1.domain.com`, the receiving mail server can safely tell that this is a mailserver allowed to send mail when the IP address of the sending server matches the [A record](https://github.com/mic05/SelfHosting/wiki/DNS-records#a-resource-record) of `mail1.domain.com`.
 
 ## 9. Set MX records
 
@@ -346,3 +357,54 @@ If a mail server is delivering a mail to info@domain.com, the mail server looks 
 ### What do I have to set?
 
 So simply set your MX record to the hostname of your mail server, e.g. `mail1.domain.com`.
+
+## 10. DKIM (DomainKeys Identified Mail)
+### What is DKIM?
+DKIM is an mail authentication method. It was designed to detect forged sender addresses in mails and prevent mail spoofing. With DKIM it's possible for the receiver to check if the mail from a specific domain was authorized by the owner of that domain. You can read about the specifications in [RFC 6376](https://datatracker.ietf.org/doc/html/rfc6376/).
+
+### Is DKIM a must have?
+DKIM is definitely no must have as of today but you are well advised to use it. As it costs nothing, you can simply set it up if your mail server or smarthost supports it.
+
+### How does DKIM work?
+DKIM has basically two parts: The signing and the verification. I will keep it very simple here.
+
+When your mail server or smarthost sends a mail, it is signing it with a dkim key. The receiver of the mail can then verify this signature and make sure that the mail was authorized by your server/domain. The verification is done using some information in your DNS.
+
+### Parts of DKIM
+A DKIM entry in your DNS has to be on a specific selector. You can choose this selector as you like.
+
+| Part          | Meaning           |
+| ------------- |:-------------:|
+| v     | Version of the DKIM Key |
+| h      | Accepted hash algorithms, default is to accept all.      |
+| k | The type of the key. Default is rsa.      |
+| n | Notes that might be of interest to a human.      |+
+| p | The DKIM public key.      |
+| t | These are flags. There are only two: y is for testing DKIM, s is for production use.      |
+
+### How to set up DKIM
+First you have to create a DKIM key on your mail server or smarthost. Please refer to the documentation of these on how to generate your dkim key. While generating the dkim key, you have to choose a selector. You have to remember this selector for the part in your DNS. Please choose a key with the minimum length of 2048.
+
+After creating the key, you have to set up the [TXT record](https://github.com/mic05/SelfHosting/wiki/DNS-records#txt-resource-record). Most mail server solutions or smarthosts will give you the usable DNS entry. It should look something like this:
+```
+v=DKIM1;t=s;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1E1UJDhEjpLdXFy3XliTdYSL0IWsMuxmrpaaYvp2uCYuEi8mhS/YVGtD0ZDPmxQPlYPc5W112QhLBAYZmZMdFtfNohkwjHTvXQe5lb9B1CT0ZT+cqTAAgksMK6bpXZciblD1jxaODddsFHEQnKh9RxVpiLDPGPzOhHIT0REk59cxqXBophmF71yo20vUoMJCeBKbfOJ6Yc/ybcoHePwXl2bpQOKi0cfYzojLtf+M4LZGcEY5pCS7dkHiu4TiQUSJr8bnWTAVtdvLqkAvbhu7IXfvVmXSvIoYKNhhjFKH+wxfAaoBkxQXNc4YQGVh+ki++Jk0uBr4tAkTYMhx/ptZGwIDAQAB
+```
+
+You have to set this [TXT record](https://github.com/mic05/SelfHosting/wiki/DNS-records#txt-resource-record) on the domain `[selector]._domainkey.[domain.com]`. If your selector is `ms1` for example, you have to set the record on the domain `ms1._domainkey.domain.com`.
+
+## 11. Specifics of some email providers
+As I live in Germany, I can only speak for providers operating here. Some email providers have some special needs you have to set up in order for them to accept the mails of your email server.
+
+### German Telekom
+The German mail provider Telekom has many users in Germany but has some very weird thoughts about mail standards and does some interesting things. 
+If you receive mails on your mail server from German Telekom, there will be no SPF and no DKIM entries as stated [here](https://postmaster.t-online.de/#t3.5).
+
+If you want to send emails to German Telekom from your mail server, you have to set up a website with a possibility to contact you, this is stated [here](https://postmaster.t-online.de/#t4.1). If you have no website with contact data, the mail servers at German Telekom will simply reject mails you are sending. If you encounter this problem but you have a website already up and running with contact information, you can contact the mail address in the bounce reply from them to unlock your mail server and/or domain.
+
+### Microsoft Exchange Online (Microsoft 365)
+If you encounter problems with Microsoft servers rejecting your mails, I can only advise you to read the bounce reply very thoroughly. Often the reason is only some whitelist you are not on or some internal blacklist your mail server or domain is on. There should be a link in the bounce reply to unlock and unblock your mail server and/or domain. I have had this with some public IPs from Hetzner.
+
+## 12. Do I have everything set up correctly?
+There is a great tool to test your mail server and DNS settings: [mail tester](https://www.mail-tester.com/).
+
+If you open the website, you'll get an temporary email address. Simply send an email to this address and click on `check`. After this, your email is being analyzed and you get an score out of ten. If you have everything set up correctly, your score should be 10/10. If your score is not 10/10, you can simply see in the result what is causing the loss and after correcting it, can test it again.
